@@ -12,6 +12,7 @@ public class StartingForm extends javax.swing.JFrame {
      */
     public StartingForm() {
         initComponents();
+        this.setLocationRelativeTo(null); // TO view in the screen center
     }
 
     /**

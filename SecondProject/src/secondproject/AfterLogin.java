@@ -12,6 +12,7 @@ public class AfterLogin extends javax.swing.JFrame {
      */
     public AfterLogin() {
         initComponents();
+        this.setLocationRelativeTo(null); // TO view in the screen center
     }
 
     /**

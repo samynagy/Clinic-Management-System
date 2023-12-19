@@ -1,11 +1,18 @@
-
 package secondproject;
+
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
  * @author PC
  */
 public class StartingForm extends javax.swing.JFrame {
+//private Connection connection = DB_Connection.getConnection();
 
     /**
      * Creates new form StartingForm
@@ -33,8 +40,8 @@ public class StartingForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,10 +71,7 @@ public class StartingForm extends javax.swing.JFrame {
         jLabel5.setText("Phone Number :");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setText("ID : ");
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("DataBase ID");
+        jLabel4.setText("SSN : ");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setText("Patient Registration :");
@@ -91,20 +95,17 @@ public class StartingForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(47, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField5)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextField3)
+                        .addComponent(jTextField2)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
@@ -113,9 +114,9 @@ public class StartingForm extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addComponent(jLabel3)
                 .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel1))
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -140,11 +141,51 @@ public class StartingForm extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        String First_Name = jTextField2.getText();
+        String Second_Name = jTextField3.getText();
+        String Phone_Num = jTextField4.getText();
+        String SSN = jTextField5.getText();
+        String sqlQuery = "INSERT INTO patients (SSN, firstname, secondname, phone) VALUES ('" + SSN + "', '" + First_Name + "', '" + Second_Name + "', '" + Phone_Num + "')";
+//        try ( PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+//            int rowsAffected = preparedStatement.executeUpdate();
+//
+//            if (rowsAffected > 0) {
+//                JOptionPane.showMessageDialog(this, "Insert successful!");
+//
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Insert failed!");
+//            }
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Error");
+//
+//        }
+
+        try {
+            String connectionString = "jdbc:sqlserver://255.255.255.0:1433;database=Mangment_Clinc_Sysyem;encrypt=true;trustservercertificate=true";
+            try ( Connection connection = DriverManager.getConnection(connectionString)) {
+                PreparedStatement st = connection.prepareStatement(sqlQuery);
+                st.executeUpdate();
+                int rowsAffected = st.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Insert successful!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Insert failed!");
+                }
+
+                st.close();
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        JFram s=new JFram();
+        JFram s = new JFram();
         s.show();
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -187,7 +228,6 @@ public class StartingForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -196,5 +236,6 @@ public class StartingForm extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

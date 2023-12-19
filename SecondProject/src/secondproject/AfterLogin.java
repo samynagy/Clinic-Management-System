@@ -25,27 +25,6 @@ public class AfterLogin extends javax.swing.JFrame {
         DataHolder.setEnteredId(id);
         String sqlQuery = "SELECT firstname + ' ' + secondname AS full_name, SSN, phone FROM patients WHERE SSN =" + id + ";";
 
-//        try ( PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-//            preparedStatement.setString(1, ID);
-//
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            if (resultSet.next()) {
-//                String fullName = resultSet.getString("full_name");
-//                String ssn = resultSet.getString("SSN");
-//                String phone = resultSet.getString("phone");
-//
-//                jLabel2.setText(fullName);
-//                jLabel6.setText(ssn);
-//                jLabel4.setText(phone);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "No record found for ID: " + ID);
-//            }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//            JOptionPane.showMessageDialog(this, "Error");
-//
-//        }
         ResultSet rs = DB_Connection.read(sqlQuery);
         try {
             if (rs.next()) {

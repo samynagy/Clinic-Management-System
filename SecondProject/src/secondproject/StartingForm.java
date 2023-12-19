@@ -162,7 +162,7 @@ public class StartingForm extends javax.swing.JFrame {
 //        }
 
         try {
-            String connectionString = "jdbc:sqlserver://255.255.255.0:1433;database=Mangment_Clinc_Sysyem;encrypt=true;trustservercertificate=true";
+            String connectionString = "jdbc:sqlserver://192.168.1.12\\\\SQLEXPRESS:1433;database=Mangment_Clinc_Sysyem;encrypt=true;trustservercertificate=true;user=George;password=12345;";
             try ( Connection connection = DriverManager.getConnection(connectionString)) {
                 PreparedStatement st = connection.prepareStatement(sqlQuery);
                 st.executeUpdate();

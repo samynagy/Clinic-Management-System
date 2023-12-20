@@ -22,10 +22,11 @@ public class Appointment extends javax.swing.JFrame {
         String Name= DataHolder.getEnteredName();
         String id= DataHolder.getEnteredId();
         String phone= DataHolder.getEnteredPhone();
+        String docname=DataHolder.getDOCName();
          jLabel2.setText(Name);
          jLabel6.setText(id);
          jLabel4.setText(phone);
-
+         jLabel11.setText(docname);
     }
 
    

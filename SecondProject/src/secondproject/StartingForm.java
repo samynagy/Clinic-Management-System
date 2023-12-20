@@ -1,11 +1,15 @@
 package secondproject;
 
-import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static secondproject.JFram.connection;
 
 /**
  *
@@ -13,6 +17,7 @@ import java.sql.SQLException;
  */
 public class StartingForm extends javax.swing.JFrame {
 //private Connection connection = DB_Connection.getConnection();
+    public static Connection connection;
 
     /**
      * Creates new form StartingForm
@@ -145,42 +150,46 @@ public class StartingForm extends javax.swing.JFrame {
         String Second_Name = jTextField3.getText();
         String Phone_Num = jTextField4.getText();
         String SSN = jTextField5.getText();
-        String sqlQuery = "INSERT INTO patients (SSN, firstname, secondname, phone) VALUES ('" + SSN + "', '" + First_Name + "', '" + Second_Name + "', '" + Phone_Num + "')";
-//        try ( PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-//            int rowsAffected = preparedStatement.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                JOptionPane.showMessageDialog(this, "Insert successful!");
-//
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Insert failed!");
-//            }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//            JOptionPane.showMessageDialog(this, "Error");
-//
-//        }
-
+        String insertsql = "insert into patients \n"
+                + "(SSN, firstname, secondname, phone) \n"
+                +"VALUES (?, ?,?,?)";
+              System.out.println(SSN);
+              System.out.println(First_Name);
+              System.out.println(Second_Name);
+              System.out.println(Phone_Num);
+      String Db_url = "jdbc:sqlserver://" + "192.168.1.4" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
+       String username = "admin";
+        String password = "12345";
         try {
-            String connectionString = "jdbc:sqlserver://192.168.1.12\\\\SQLEXPRESS:1433;database=Mangment_Clinc_Sysyem;encrypt=true;trustservercertificate=true;user=George;password=12345;";
-            try ( Connection connection = DriverManager.getConnection(connectionString)) {
-                PreparedStatement st = connection.prepareStatement(sqlQuery);
-                st.executeUpdate();
-                int rowsAffected = st.executeUpdate();
+            connection = DriverManager.getConnection(Db_url, username, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(StartingForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       try (
+            PreparedStatement preparedStatement = connection.prepareStatement(insertsql)
+        ) {
+            // Setting values for parameters
+            preparedStatement.setString(1, SSN);
+            preparedStatement.setString(2,First_Name );
+             preparedStatement.setString(3,Second_Name );
+               preparedStatement.setString(4,Phone_Num);
 
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "Insert successful!");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Insert failed!");
-                }
 
-                st.close();
-                connection.close();
-            }
-        } catch (SQLException e) {
-            System.out.println("Error");
+
+            // Executing the insert operation
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            System.out.println("Rows affected: " + rowsAffected);
+            
+             JFram a = new JFram();
+                    a.show();
+                    this.dispose();
+        }  catch (Exception e) {
+            System.out.println("ERROR HERE ");
             e.printStackTrace();
         }
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

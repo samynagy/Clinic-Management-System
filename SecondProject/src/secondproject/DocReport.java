@@ -1,13 +1,18 @@
 
 package secondproject;
+
+
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
  
 public class DocReport extends javax.swing.JFrame {
 
@@ -17,6 +22,7 @@ public class DocReport extends javax.swing.JFrame {
     public DocReport() {
         initComponents();
         this.setLocationRelativeTo(null); // TO view in the screen center
+        jLabel4.setText(DataHolder.getEnteredName());
     }
 
     /**
@@ -160,8 +166,10 @@ public class DocReport extends javax.swing.JFrame {
         // TODO add your handling code here:
          String ID = jTextField2.getText();
         String sqlQuery = "SELECT firstname + ' ' + secondname AS full_name, SSN, phone FROM patients WHERE SSN =" + ID + ";";
-         ResultSet rs = DB_Connection.read(sqlQuery);
-            try {
+        
+        try (Statement st = JFram.connection.createStatement()){
+             try(ResultSet rs = st.executeQuery(sqlQuery)) {
+                   try {
                 if (rs.next()) {
                     String fullName = rs.getString("full_name");
                   jLabel3.setText(fullName);
@@ -174,6 +182,15 @@ public class DocReport extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Error");
             }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(DocReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(DocReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
+          
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

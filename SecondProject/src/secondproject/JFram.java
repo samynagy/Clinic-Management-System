@@ -6,10 +6,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JFram extends javax.swing.JFrame {
+
+    public static Connection connection;
 
 //    private Connection connection = DB_Connection.getConnection();
     public JFram() {
@@ -111,96 +114,53 @@ public class JFram extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String ID = jTextField1.getText();
-
         String selectedOption = (String) jComboBox1.getSelectedItem();
-        if ("Patient".equals(selectedOption)) { // if patient selected
-            String sqlQuery = "SELECT * FROM patients WHERE SSN = '" + ID + "';";
-//        try (
-//                    //  SQL query
-//                    PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
-//                ) {
-//                    // ID parameter in the prepared statement
-//                    preparedStatement.setString(1, ID);
-//
-//                    // Execute the query and get the result set
-//                    ResultSet resultSet = preparedStatement.executeQuery();
-//
-//                    // Check if the result set has any rows
-//                    if (resultSet.next()) {
-//                        AfterLogin a=new AfterLogin();
-//                        a.show();
-//                        dispose();
-//                    } else {
-//                         JOptionPane.showMessageDialog(this,"Write Valid ID");
-//                    }
-//
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                    JOptionPane.showMessageDialog(this,"Error");
-//                }
-            ResultSet rs = DB_Connection.read(sqlQuery);
+        String username = "admin";
+        String password = "12345";
+        if ("Patient".equals(selectedOption)) {
             try {
+                String Db_url = "jdbc:sqlserver://" + "192.168.1.4" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
+                connection = DriverManager.getConnection(Db_url, username, password);
+                String sqlQuery = "SELECT * FROM patients WHERE SSN = '" + ID + "';";
+
+                System.out.println("CONNECTED");
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sqlQuery);
                 if (rs.next()) {
-                    String ssn = rs.getString("SSN");
+                    String ssn = String.valueOf(rs.getString("SSN"));
                     DataHolder.setEnteredId(ssn);
+
                     AfterLogin a = new AfterLogin();
                     a.show();
                     this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Write Valid ID");
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error");
-            }
 
+            } catch (Exception e) {
+                System.out.println("Error happend!");
+            }
         } else if ("Doctor".equals(selectedOption)) {
-            String sqlQuery = "SELECT * FROM doctors WHERE doctor_id = " + ID + ";";
-//            try (
-//                // SQL query
-//                PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-//                //  ID parameter in the prepared statement
-//                preparedStatement.setString(1, ID);
-//
-//                // Execute the query and get the result set
-//                ResultSet resultSet = preparedStatement.executeQuery();
-//
-//                // Check if the result set has any rows
-//                if (resultSet.next()) {
-//                    AfterLogin a = new AfterLogin();
-//                    a.show();
-//                    dispose();
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Write Valid ID");
-//                }
-//
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//                JOptionPane.showMessageDialog(this, "Error");
-//
-//            }
-
-            ResultSet rs = DB_Connection.read(sqlQuery);
             try {
+                String Db_url = "jdbc:sqlserver://" + "192.168.1.4" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
+                connection = DriverManager.getConnection(Db_url, username, password);
+                String sqlQuery = " select firstname +' ' + secondname as full_name FROM doctors WHERE doctor_id = " + ID + ";";
+
+                System.out.println("CONNECTED");
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sqlQuery);
                 if (rs.next()) {
-                    String id = rs.getString("doc_id");
+                    String name = String.valueOf(rs.getString("full_name"));
+                     String id = ID;
+                    DataHolder.setEnteredName(name);
                     DataHolder.setEnteredId(id);
-                    AfterLogin a = new AfterLogin();
+                   DocReport a = new DocReport();
                     a.show();
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Write Valid ID");
+                    this.dispose();
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error");
+
+            } catch (Exception e) {
+                System.out.println("Error happend!");
             }
         }
-        if (jTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please Fill out ID.");
-        }
-        String enteredId = ID;
-        DataHolder.setEnteredId(enteredId);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {

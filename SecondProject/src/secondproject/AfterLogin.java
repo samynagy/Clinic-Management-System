@@ -1,12 +1,17 @@
 package secondproject;
 
+import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import static secondproject.JFram.connection;
 
 /**
  *
@@ -18,14 +23,16 @@ public class AfterLogin extends javax.swing.JFrame {
     /**
      * Creates new form AfterLogin
      */
-    public AfterLogin() {
+    String[] items;
+
+    public AfterLogin() throws SQLException {
         initComponents();
         this.setLocationRelativeTo(null); // TO view in the screen center
-        String id = jLabel6.getText();
-        DataHolder.setEnteredId(id);
+        String id = DataHolder.getEnteredId();
+        jLabel6.setText(id);
         String sqlQuery = "SELECT firstname + ' ' + secondname AS full_name, SSN, phone FROM patients WHERE SSN =" + id + ";";
-
-        ResultSet rs = DB_Connection.read(sqlQuery);
+        Statement st = JFram.connection.createStatement();
+        ResultSet rs = st.executeQuery(sqlQuery);
         try {
             if (rs.next()) {
                 String fullName = rs.getString("full_name");
@@ -42,7 +49,31 @@ public class AfterLogin extends javax.swing.JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error");
         }
+        try {
+            // Fetch items from the database using your Database
 
+            String Query_Number_of_Departments = "select count(*) as Departments_Count from department;";
+            Statement st3 = JFram.connection.createStatement();
+            ResultSet rs3 = st3.executeQuery(Query_Number_of_Departments);
+            rs3.next();
+            int Number_of_Departments = Integer.parseInt(rs3.getString("Departments_Count"));
+            System.out.println(Number_of_Departments);
+            items = new String[Number_of_Departments];
+            String Name_of_Departments = "select dep_name from department;";
+            Statement st2 = JFram.connection.createStatement();
+            ResultSet rs2 = st2.executeQuery(Name_of_Departments);
+
+            for (int i = 0; i < Number_of_Departments; i++) {
+                rs2.next();
+                items[i] = rs2.getString("dep_name");
+            }
+            jComboBox1.setModel(new DefaultComboBoxModel<>(items));
+            // Create a ComboBoxModel and set it to the JComboBox
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error222");
+        }
         String Name = jLabel2.getText();
         DataHolder.setEnteredName(Name);
         String Phone = jLabel4.getText();
@@ -66,12 +97,11 @@ public class AfterLogin extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Booking");
@@ -97,17 +127,12 @@ public class AfterLogin extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setText("Choose Department : ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "heart", "teeth" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel10.setText("Choose Date : ");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Samy", "George" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -131,6 +156,13 @@ public class AfterLogin extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Apply");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,33 +174,31 @@ public class AfterLogin extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel10))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel6))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 206, Short.MAX_VALUE)))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3)))
+                        .addGap(0, 144, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
@@ -196,16 +226,13 @@ public class AfterLogin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 46, Short.MAX_VALUE)))
+                        .addGap(0, 88, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -214,21 +241,9 @@ public class AfterLogin extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        try {
-            // Fetch items from the database using your DB_Connection class
-            String[] items = {"heart", "teeth"};
-            // Create a ComboBoxModel and set it to the JComboBox
-            jComboBox1.setModel(new DefaultComboBoxModel<>(items));
-            // Fetch items from the database using your DB_Connection class
-            String[] doctors = {"Samy", "George"};
-            // Create a ComboBoxModel and set it to the JComboBox
-            jComboBox2.setModel(new DefaultComboBoxModel<>(doctors));
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error");
 
-            // Handle the exception appropriately (e.g., show an error message)
-        }
+        // Handle the exception appropriately (e.g., show an error message)
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
@@ -244,10 +259,52 @@ public class AfterLogin extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String doc = (String) jComboBox2.getSelectedItem();
+        DataHolder.setDOCName(doc);
         Appointment a = new Appointment();
         a.show();
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        /////// samy task            
+//// edit query 
+        String dep = (String) jComboBox1.getSelectedItem();
+        String Query_Number_of_Doctors = "SELECT\n"
+                + "    count(*) as doctors_count\n"
+                + "FROM\n"
+                + "    doctors\n"
+                + "JOIN\n"
+                + "    department ON doctors.dep_id = department.dep_id\n"
+                + "WHERE\n"
+                + "    department.dep_name = '" + dep + "';";
+
+        try (Statement st4 = JFram.connection.createStatement()) {
+            ResultSet rs4 = st4.executeQuery(Query_Number_of_Doctors);
+            rs4.next();
+            int Number_of_Doctors = Integer.parseInt(rs4.getString("doctors_count"));
+            String[] doctors = new String[Number_of_Doctors];
+            String Query_Names_of_Doctors = "SELECT\n"
+                    + "    doctors.firstname + doctors.secondname as doctor_name\n"
+                    + "FROM\n"
+                    + "    doctors\n"
+                    + "JOIN\n"
+                    + "    department ON doctors.dep_id = department.dep_id\n"
+                    + "WHERE\n"
+                    + "    department.dep_name = '" + dep + "';";
+            Statement st5 = JFram.connection.createStatement();
+            ResultSet rs5 = st5.executeQuery(Query_Names_of_Doctors);
+            for (int i = 0; i < Number_of_Doctors; i++) {
+                rs5.next();
+                doctors[i] = rs5.getString("doctor_name");
+            }
+            jComboBox2.setModel(new DefaultComboBoxModel<>(doctors));
+        } catch (SQLException ex) {
+            Logger.getLogger(AfterLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -276,7 +333,11 @@ public class AfterLogin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AfterLogin().setVisible(true);
+                try {
+                    new AfterLogin().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AfterLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -284,11 +345,10 @@ public class AfterLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

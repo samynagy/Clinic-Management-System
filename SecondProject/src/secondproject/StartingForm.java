@@ -157,8 +157,8 @@ public class StartingForm extends javax.swing.JFrame {
               System.out.println(First_Name);
               System.out.println(Second_Name);
               System.out.println(Phone_Num);
-      String Db_url = "jdbc:sqlserver://" + "192.168.1.4" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
-       String username = "admin";
+      String Db_url = "jdbc:sqlserver://" + "WRITE YOUR IP" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
+       String username = "Mekhail";
         String password = "12345";
         try {
             connection = DriverManager.getConnection(Db_url, username, password);

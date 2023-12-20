@@ -158,7 +158,10 @@ public class DocReport extends javax.swing.JFrame {
         }
          else
         {
-            // save medication in database
+            //need to save it in database
+            JFram a=new JFram();
+            a.show();
+            dispose();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

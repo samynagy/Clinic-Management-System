@@ -14,7 +14,6 @@ public class JFram extends javax.swing.JFrame {
 
     public static Connection connection;
 
-//    private Connection connection = DB_Connection.getConnection();
     public JFram() {
         initComponents();
         this.setLocationRelativeTo(null); // TO view in the screen center
@@ -115,11 +114,11 @@ public class JFram extends javax.swing.JFrame {
         // TODO add your handling code here:
         String ID = jTextField1.getText();
         String selectedOption = (String) jComboBox1.getSelectedItem();
-        String username = "admin";
+        String username = "Mekhail";
         String password = "12345";
         if ("Patient".equals(selectedOption)) {
             try {
-                String Db_url = "jdbc:sqlserver://" + "192.168.1.4" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
+                String Db_url = "jdbc:sqlserver://" + "WRITE YOUR IP" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
                 connection = DriverManager.getConnection(Db_url, username, password);
                 String sqlQuery = "SELECT * FROM patients WHERE SSN = '" + ID + "';";
 
@@ -140,7 +139,7 @@ public class JFram extends javax.swing.JFrame {
             }
         } else if ("Doctor".equals(selectedOption)) {
             try {
-                String Db_url = "jdbc:sqlserver://" + "192.168.1.4" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
+                String Db_url = "jdbc:sqlserver://" + "WRITE YOUR IP" + ":1433;database=" + "Mangment_Clinc_Sysyem" + ";encrypt=true;trustservercertificate=true";;
                 connection = DriverManager.getConnection(Db_url, username, password);
                 String sqlQuery = " select firstname +' ' + secondname as full_name FROM doctors WHERE doctor_id = " + ID + ";";
 

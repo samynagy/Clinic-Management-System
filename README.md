@@ -38,8 +38,8 @@ The Clinic Management System is a robust solution crafted in Java for a Windows 
 ### Teammates
 
 -Samy Nagy: [GitHub](https://github.com/samynagy) | [LinkedIn](https://www.linkedin.com/in/samy-nagy-46ba41233/)
-  - Email: [](mailto:samynagy95@gmail.com)
+  - Email: [mail](mailto:samynagy95@gmail.com)
 
 - George Bebawy: [GitHub](https://github.com/George-Bebawy) | [LinkedIn](https://www.linkedin.com/in/george-bebawy/)
-  - Email: [](mailto:georgebebawy12@gmail.com)
+  - Email: [mail](mailto:georgebebawy12@gmail.com)
 

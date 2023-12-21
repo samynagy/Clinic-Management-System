@@ -16,7 +16,10 @@ The Clinic Management System is a robust solution crafted in Java for a Windows 
 
 ### Technology Stack
 
-- **Frontend:** Java for Windows Form application.
+- ## Frontend
+
+- **Programming Language:** Java
+  - **Application Type:** Windows Form
 - ## Backend
 
 - **Programming Language:** Java

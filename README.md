@@ -17,7 +17,12 @@ The Clinic Management System is a robust solution crafted in Java for a Windows 
 ### Technology Stack
 
 - **Frontend:** Java for Windows Form application.
-- **Backend:** Java programming language and JDBC for database management, Microsoft SQL Server for data storage.
+- ## Backend
+
+- **Programming Language:** Java
+  - **Database Management:** JDBC
+- **Database:** Microsoft SQL Server
+
 
 ### Achievements
 
@@ -28,10 +33,7 @@ The Clinic Management System is a robust solution crafted in Java for a Windows 
 
 ## Project Team and Contact Information
 
-   Samy Nagy: [GitHub](https://github.com/samynagy) | [LinkedIn](https://www.linkedin.com/in/samy-nagy-46ba41233/)
-   - Email: [mail](mailto:samynagy95@gmail.com)
+   Samy Nagy: [GitHub](https://github.com/samynagy) | [LinkedIn](https://www.linkedin.com/in/samy-nagy-46ba41233/) | [Mail](mailto:samynagy95@gmail.com)
 
-    
-   George Bebawy: [GitHub](https://github.com/George-Bebawy) | [LinkedIn](https://www.linkedin.com/in/george-bebawy/)
-  - Email: [mail](mailto:georgebebawy12@gmail.com)
+   George Bebawy: [GitHub](https://github.com/George-Bebawy) | [LinkedIn](https://www.linkedin.com/in/george-bebawy/) | [Mail](mailto:georgebebawy12@gmail.com)
 

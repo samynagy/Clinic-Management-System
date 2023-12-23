@@ -34,6 +34,8 @@ The Clinic Management System is a robust solution crafted in Java for a Windows 
 - **User-Friendly Interfaces:** Contribution to improved healthcare delivery through intuitive design.
 - **Secure Data Handling:** Robust backend database management for ensured data security.
 
+### If you want to show the project overview follow this [Video](https://github.com/samynagy/Clinic-Management-System/blob/main/Project_Overview.mp4)
+
 ## Project Team and Contact Information
 
    Samy Nagy: [GitHub](https://github.com/samynagy) | [LinkedIn](https://www.linkedin.com/in/samy-nagy-46ba41233/) | [Mail](mailto:samynagy95@gmail.com)
